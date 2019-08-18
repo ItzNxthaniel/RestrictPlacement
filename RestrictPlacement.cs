@@ -4,16 +4,17 @@ using System.Collections.Generic;
 
 namespace Oxide.Plugins
 {
-    [Info("Restrict Placement", "Goomig", "1.0.1")]
-    [Description("A simple Rust plugin that allows you to restrict/allow players from placing items.")]
+    [Info("Restrict Placement", "Goomig", "1.0.2")]
+    [Description("Restrict or allow placing items")]
     public class RestrictPlacement : CovalencePlugin
     {
         #region // Fields/Variables \\
         private Configuration _config;
-        #endregion
+		private const string permissionBypass = "restrictplacement.bypass";
+		#endregion
 
-        #region // Config \\
-        protected override void LoadConfig()
+		#region // Config \\
+		protected override void LoadConfig()
         {
             base.LoadConfig();
             _config = Config.ReadObject<Configuration>();
@@ -50,18 +51,12 @@ namespace Oxide.Plugins
                 ["Restricted"] = "<color=#ff7675>Placement Restriction</color>: You are not allowed to place this item."
             }, this);
         }
-
-        private void Message(BasePlayer player, string key, params object[] args)
-        {
-            var message = string.Format(lang.GetMessage(key, this, player.UserIDString), args);
-            player.ChatMessage(message);
-        }
         #endregion
 
         #region // Hooks \\
         private void Init() 
         {
-            permission.RegisterPermission("restrictplacement.bypass", this);
+            permission.RegisterPermission(permissionBypass, this);
         }
 
         private object CanBuild(Planner planner, Construction prefab, Construction.Target target)
@@ -74,10 +69,10 @@ namespace Oxide.Plugins
             var player = planner.GetOwnerPlayer();
             if (player == null) return null;
 
-            var name = prefab.fullName;
-            if (_config.blacklist.Contains(name) && !permission.UserHasPermission(player.UserIDString, "restrictplacement.bypass"))
+            if (_config.blacklist.Contains(prefab.fullName) && !permission.UserHasPermission(player.UserIDString, permissionBypass))
             {
-                Message(player, "Restricted");
+				var msg = string.Format(lang.GetMessage("Restricted", this, player.UserIDString));
+				player.ChatMessage(msg);
                 return false;
             }
             return null;
