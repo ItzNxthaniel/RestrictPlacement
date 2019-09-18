@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Oxide.Plugins
 {
-    [Info("Restrict Placement", "Goomig", "1.0.3")]
+    [Info("Restrict Placement", "Goomig", "1.0.4")]
     [Description("Restrict or allow placing items")]
     public class RestrictPlacement : CovalencePlugin
     {
@@ -67,7 +67,7 @@ namespace Oxide.Plugins
         private object CheckBuild(Planner planner, Construction prefab, Construction.Target target)
         {
             var player = planner.GetOwnerPlayer();
-            if (player == null) return true;
+            if (player == null) return null;
 
             if (_config.blacklist.Contains(prefab.fullName) && !permission.UserHasPermission(player.UserIDString, permissionBypass))
             {
@@ -75,7 +75,7 @@ namespace Oxide.Plugins
 				player.ChatMessage(msg);
                 return false;
             }
-            return true;
+            return null;
         }
         #endregion
     }
