@@ -1,0 +1,17 @@
+# Build output
+[Bb]in/
+[Dd]ebug/
+[Dd]ebugPublic/
+[Oo]bj/
+[Rr]elease/
+[Rr]eleases/
+build/
+bld/
+x64/
+x86/
+
+# Visual Studio
+.vs/
+*.psess
+*.vsp
+*.vspx
