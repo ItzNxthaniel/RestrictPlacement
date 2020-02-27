@@ -18,7 +18,7 @@
 
 ```json
 {
-  "Restricted": "<color=#ff7675>Placement Restriction</color>: You are not allowed to place this item."
+  "Restricted": "<color=#d63031>Restrict Placement</color><color=#ffeaa7>: You're not allowed to place this item.</color>"
 }
 ```
 
